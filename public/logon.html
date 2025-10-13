@@ -2,48 +2,59 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logon</title>
-    <link rel="stylesheet" href="css/logon.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Logon</title>
+  <link rel="stylesheet" href="css/logon.css">
 </head>
 
 <body>
-    <div class="container">
-        <h1>Welcome to Node App</h1>
-        <div class="tab">
-            <button class="tab-button active" id="login-tab">Logon</button>
-            <button class="tab-button" id="create-account-tab">Create Account</button>
-        </div>
+  <div class="split-container">
+    <!-- LEFT: Logon -->
+    <div class="split-left">
+      <h1>Walletly</h1>
+      <div class="tab">
+        <button class="tab-button active" id="login-tab">Login</button>
+        <button class="tab-button" id="create-account-tab">Create Account</button>
+      </div>
 
-        <div id="form-container">
-            <!-- Logon Form -->
-            <form id="logon-form" class="active-form">
-                <label for="login-email">Email:</label>
-                <input type="email" id="login-email" placeholder="Enter your email" required>
+      <div id="form-container">
+        <!-- Logon Form -->
+        <form id="logon-form" class="active-form">
+          <label for="login-email">Email:</label>
+          <input type="email" id="login-email" placeholder="Enter your email" required>
 
-                <label for="login-password">Password:</label>
-                <input type="password" id="login-password" placeholder="Enter your password" required>
+          <label for="login-password">Password:</label>
+          <input type="password" id="login-password" placeholder="Enter your password" required>
 
-                <button type="submit" class="button">Logon</button>
-            </form>
+          <button type="submit" class="button">Login</button>
+        </form>
 
-            <!-- Create Account Form -->
-            <form id="create-account-form">
-                <label for="create-email">Email:</label>
-                <input type="email" id="create-email" placeholder="Enter your email" required>
+        <!-- Create Account Form -->
+        <form id="create-account-form">
+          <label for="create-email">Email:</label>
+          <input type="email" id="create-email" placeholder="Enter your email" required>
 
-                <label for="create-password">Password:</label>
-                <input type="password" id="create-password" placeholder="Create your password" required>
+          <label for="create-password">Password:</label>
+          <input type="password" id="create-password" placeholder="Create your password" required>
 
-                <button type="submit" class="button">Create Account</button>
-            </form>
+          <button type="submit" class="button">Create Account</button>
+        </form>
 
-            <p id="message" class="message"></p>
-        </div>
+        <p id="message" class="message"></p>
+      </div>
     </div>
 
-    <script src="js/logon.js"></script>
+    <!-- RIGHT: Welcome Back -->
+    <div class="split-right">
+      <div class="welcome-box">
+        <h2>Welcome Back!</h2>
+        <p>Access your wallet, manage your finances, and stay in control — all from one place.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/logon.js"></script>
 </body>
 
 </html>
