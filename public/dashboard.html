@@ -1,23 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="/css/dashboard.css">
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>Users</h1>
-            <div>
-                <button id="refreshButton">Refresh List</button>
-                <button id="logoutButton">Log Out</button>
-            </div>
-        </div>
-        <div class="user-list" id="userList"></div>
-    </div>
-    <script src="/js/dashboard.js"></script>
-    <script src="/js/datamodel.js"></script>
-</body>
+     <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dabang Dashboard</title>
+
+    <link rel="stylesheet" href="css/dashboard.css" />
+
+    <!-- Boxicons (for icons) -->
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="logo">
+        <i class="bx bx-cube-alt"></i>
+      </div>
+
+      <nav class="menu">
+        <h1 class="menu-header">Menu</h1>
+        <div class="menu-item nav-active" data-tooltip="Dashboard">
+          <i class="bx bx-home-smile"></i>
+          <span>Dashboard</span>
+        </div>
+        <div class="menu-item" data-tooltip="Leaderboard">
+          <i class="bx bx-bar-chart-alt-2"></i>
+          <span>Leaderboard</span>
+        </div>
+        <div class="menu-item" data-tooltip="Orders">
+          <i class="bx bx-cart"></i>
+          <span>Orders</span>
+        </div>
+        <div class="menu-item" data-tooltip="Products">
+          <i class="bx bx-package"></i>
+          <span>Products</span>
+        </div>
+        <div class="menu-item" data-tooltip="Sales Report">
+          <i class="bx bx-line-chart"></i>
+          <span>Sales Report</span>
+        </div>
+        <div class="menu-item" data-tooltip="Messages">
+          <i class="bx bx-chat"></i>
+          <span>Messages</span>
+        </div>
+        <div class="menu-item" data-tooltip="Settings">
+          <i class="bx bx-cog"></i>
+          <span>Settings</span>
+        </div>
+
+        <h1 class="menu-header shortcuts">Shortcuts</h1>
+        <div class="menu-item" data-tooltip="Add">
+          <i class="bx bx-add-to-queue"></i>
+          <span>Add</span>
+        </div>
+        <div class="menu-item" data-tooltip="Remove">
+          <i class="bx bx-message-square-minus"></i>
+          <span>Remove</span>
+        </div>
+      </nav>
+
+      <!-- Logout -->
+      <div class="logout" data-tooltip="Logout">
+        <i class="bx bx-log-out"></i>
+        <span>Logout</span>
+      </div>
+    </aside>
+
+    <!-- Main Dashboard Content -->
+    <main class="dashboard-content">
+      <div class="header">
+        <h1>Users</h1>
+        <div>
+          <button id="refreshButton">Refresh List</button>
+          <button id="logoutButton">Log Out</button>
+        </div>
+      </div>
+
+      <div class="user-list" id="userList"></div>
+    </main>
+
 </html>
