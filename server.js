@@ -45,39 +45,35 @@ async function createConnection() {
 
 // **Authorization Middleware: Verify JWT Token and Check User in Database**
 async function authenticateToken(req, res, next) {
-    const token = req.headers['authorization'];
+  const hdr = req.headers.authorization || '';
+  const parts = hdr.split(' ');
+  const token = parts.length === 2 && parts[0] === 'Bearer' ? parts[1] : null;
+  if (!token) return res.status(401).json({ message: 'Access denied. No token provided.' });
 
-    if (!token) {
-        return res.status(401).json({ message: 'Access denied. No token provided.' });
+  jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+    if (err) return res.status(401).json({ message: 'Invalid or expired token.' });
+    try {
+      const conn = await createConnection();
+      // make sure your table has an is_admin column (see SQL below)
+      const [rows] = await conn.execute(
+        'SELECT email, is_admin FROM user WHERE email = ?',
+        [decoded.email]
+      );
+      await conn.end();
+      if (!rows.length) return res.status(403).json({ message: 'Account not found or deactivated.' });
+      req.user = decoded;       // { email }
+      req.account = rows[0];    // { email, is_admin }
+      next();
+    } catch (e) {
+      console.error(e);
+      res.status(500).json({ message: 'Database error during authentication.' });
     }
+  });
+}
 
-    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
-        if (err) {
-            return res.status(403).json({ message: 'Invalid token.' });
-        }
-
-        try {
-            const connection = await createConnection();
-
-            // Query the database to verify that the email is associated with an active account
-            const [rows] = await connection.execute(
-                'SELECT email FROM user WHERE email = ?',
-                [decoded.email]
-            );
-
-            await connection.end();  // Close connection
-
-            if (rows.length === 0) {
-                return res.status(403).json({ message: 'Account not found or deactivated.' });
-            }
-
-            req.user = decoded;  // Save the decoded email for use in the route
-            next();  // Proceed to the next middleware or route handler
-        } catch (dbError) {
-            console.error(dbError);
-            res.status(500).json({ message: 'Database error during authentication.' });
-        }
-    });
+function authorizeAdmin(req, res, next) {
+  if (!req.account?.is_admin) return res.status(403).json({ message: 'Admin privileges required.' });
+  next();
 }
 /////////////////////////////////////////////////
 //END HELPER FUNCTIONS AND AUTHENTICATION MIDDLEWARE
@@ -151,6 +147,7 @@ app.post('/api/login', async (req, res) => {
             process.env.JWT_SECRET,
             { expiresIn: '1h' }
         );
+        console.log(token)
 
         res.status(200).json({ token });
     } catch (error) {
@@ -365,4 +362,17 @@ app.get('/api/reports', authenticateToken, async (req, res) => {
 // Start the server
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
+});
+
+// ADMIN: list all users (emails + role)
+app.get('/api/admin/users', authenticateToken, authorizeAdmin, async (_req, res) => {
+  try {
+    const conn = await createConnection();
+    const [rows] = await conn.execute('SELECT email, is_admin FROM user ORDER BY email');
+    await conn.end();
+    res.status(200).json({ users: rows });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: 'Error retrieving users.' });
+  }
 });
