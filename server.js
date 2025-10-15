@@ -175,7 +175,189 @@ app.get('/api/users', authenticateToken, async (req, res) => {
 //////////////////////////////////////
 //END ROUTES TO HANDLE API REQUESTS
 //////////////////////////////////////
+// ========== INCOME ROUTES ==========
 
+// Get all income (optionally filter by ?from=YYYY-MM-DD&to=YYYY-MM-DD)
+app.get('/api/income', authenticateToken, async (req, res) => {
+  const { from, to } = req.query;
+  const sql = (from && to)
+    ? 'SELECT * FROM income WHERE user_email=? AND date BETWEEN ? AND ? ORDER BY date DESC'
+    : 'SELECT * FROM income WHERE user_email=? ORDER BY date DESC';
+  const params = (from && to) ? [req.user.email, from, to] : [req.user.email];
+
+  try {
+    const conn = await createConnection();
+    const [rows] = await conn.execute(sql, params);
+    await conn.end();
+    res.json({ items: rows });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: 'Error retrieving income.' });
+  }
+});
+
+// Create income
+app.post('/api/income', authenticateToken, async (req, res) => {
+  const { source, amount, cadence = 'monthly', date } = req.body;
+  if (!source || amount == null || !date) {
+    return res.status(400).json({ message: 'source, amount, and date are required' });
+  }
+  try {
+    const conn = await createConnection();
+    const [r] = await conn.execute(
+      'INSERT INTO income (user_email, source, amount, cadence, date) VALUES (?, ?, ?, ?, ?)',
+      [req.user.email, String(source).trim(), Number(amount), cadence, date]
+    );
+    await conn.end();
+    res.status(201).json({ id: r.insertId });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: 'Error creating income.' });
+  }
+});
+
+// Update income
+app.patch('/api/income/:id', authenticateToken, async (req, res) => {
+  const { id } = req.params;
+  const fields = ['source','amount','cadence','date'];
+  const sets = []; const vals = [];
+  fields.forEach(k => { if (k in req.body) { sets.push(`${k}=?`); vals.push(req.body[k]); } });
+  if (!sets.length) return res.status(400).json({ message: 'No fields to update.' });
+
+  try {
+    const conn = await createConnection();
+    const [r] = await conn.execute(
+      `UPDATE income SET ${sets.join(', ')} WHERE id=? AND user_email=?`,
+      [...vals, id, req.user.email]
+    );
+    await conn.end();
+    if (!r.affectedRows) return res.status(404).json({ message: 'Income not found.' });
+    res.json({ updated: true });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: 'Error updating income.' });
+  }
+});
+
+// Delete income
+app.delete('/api/income/:id', authenticateToken, async (req, res) => {
+  const { id } = req.params;
+  try {
+    const conn = await createConnection();
+    const [r] = await conn.execute('DELETE FROM income WHERE id=? AND user_email=?', [id, req.user.email]);
+    await conn.end();
+    if (!r.affectedRows) return res.status(404).json({ message: 'Income not found.' });
+    res.json({ deleted: true });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: 'Error deleting income.' });
+  }
+});
+
+
+// ========== EXPENSE ROUTES ==========
+
+// Get all expenses (optional ?from=YYYY-MM-DD&to=YYYY-MM-DD)
+app.get('/api/expenses', authenticateToken, async (req, res) => {
+  const { from, to } = req.query;
+  const sql = (from && to)
+    ? 'SELECT * FROM expense WHERE user_email=? AND date BETWEEN ? AND ? ORDER BY date DESC'
+    : 'SELECT * FROM expense WHERE user_email=? ORDER BY date DESC';
+  const params = (from && to) ? [req.user.email, from, to] : [req.user.email];
+
+  try {
+    const conn = await createConnection();
+    const [rows] = await conn.execute(sql, params);
+    await conn.end();
+    res.json({ items: rows });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: 'Error retrieving expenses.' });
+  }
+});
+
+// Create expense
+app.post('/api/expenses', authenticateToken, async (req, res) => {
+  const { category, description = null, amount, date } = req.body;
+  if (!category || amount == null || !date) {
+    return res.status(400).json({ message: 'category, amount, and date are required' });
+  }
+  try {
+    const conn = await createConnection();
+    const [r] = await conn.execute(
+      'INSERT INTO expense (user_email, category, description, amount, date) VALUES (?, ?, ?, ?, ?)',
+      [req.user.email, String(category).trim(), description, Number(amount), date]
+    );
+    await conn.end();
+    res.status(201).json({ id: r.insertId });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: 'Error creating expense.' });
+  }
+});
+
+// Update expense
+app.patch('/api/expenses/:id', authenticateToken, async (req, res) => {
+  const { id } = req.params;
+  const fields = ['category','description','amount','date'];
+  const sets = []; const vals = [];
+  fields.forEach(k => { if (k in req.body) { sets.push(`${k}=?`); vals.push(req.body[k]); } });
+  if (!sets.length) return res.status(400).json({ message: 'No fields to update.' });
+
+  try {
+    const conn = await createConnection();
+    const [r] = await conn.execute(
+      `UPDATE expense SET ${sets.join(', ')} WHERE id=? AND user_email=?`,
+      [...vals, id, req.user.email]
+    );
+    await conn.end();
+    if (!r.affectedRows) return res.status(404).json({ message: 'Expense not found.' });
+    res.json({ updated: true });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: 'Error updating expense.' });
+  }
+});
+
+// Delete expense
+app.delete('/api/expenses/:id', authenticateToken, async (req, res) => {
+  const { id } = req.params;
+  try {
+    const conn = await createConnection();
+    const [r] = await conn.execute('DELETE FROM expense WHERE id=? AND user_email=?', [id, req.user.email]);
+    await conn.end();
+    if (!r.affectedRows) return res.status(404).json({ message: 'Expense not found.' });
+    res.json({ deleted: true });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: 'Error deleting expense.' });
+  }
+});
+
+
+// ========== OPTIONAL: SIMPLE REPORTS ==========
+app.get('/api/reports', authenticateToken, async (req, res) => {
+  const { from, to } = req.query;
+  const range = (from && to) ? ' AND date BETWEEN ? AND ?' : '';
+  const params = (from && to) ? [req.user.email, from, to] : [req.user.email];
+  try {
+    const conn = await createConnection();
+    const [inc]  = await conn.execute(`SELECT IFNULL(SUM(amount),0) AS income  FROM income  WHERE user_email=?${range}`, params);
+    const [exp]  = await conn.execute(`SELECT IFNULL(SUM(amount),0) AS expenses FROM expense WHERE user_email=?${range}`, params);
+    const [cats] = await conn.execute(
+      `SELECT category, SUM(amount) total FROM expense WHERE user_email=?${range} GROUP BY category ORDER BY total DESC`,
+      params
+    );
+    await conn.end();
+    res.json({
+      totals: { income: Number(inc[0].income), expenses: Number(exp[0].expenses), net: Number(inc[0].income) - Number(exp[0].expenses) },
+      expensesByCategory: cats
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: 'Error building report.' });
+  }
+});
 
 // Start the server
 app.listen(port, () => {
