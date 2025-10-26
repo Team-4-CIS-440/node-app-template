@@ -1,140 +1,142 @@
 /* --- Global Styles --- */
-* {
-    box-sizing: border-box;
-  }
-  
-  body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
-  }
-  
-  /* --- Split Layout --- */
-  .split-container {
-    display: flex;
-    height: 100vh;
-  }
-  
-  /* LEFT SIDE: Logon */
-  .split-left {
-    flex: 1;
-    background: #ccc;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-  }
-  
-  .split-left h1 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-  }
-  
-  /* Tab Buttons */
-  .tab {
-    display: flex;
-    width: 100%;
-    max-width: 300px;
-    margin-bottom: 1rem;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid #ccc;
-  }
-  
-  .tab-button {
-    flex: 1;
-    padding: 0.75rem;
-    cursor: pointer;
-    background: #eeeeee;
-    border: none;
-    font-size: 1rem;
-    transition: background 0.3s;
-  }
-  
-  .tab-button:hover {
-    background: #dddddd;
-  }
-  
-  .tab-button.active {
-    background: #4b6cb7;
-    color: white;
-  }
-  
-  /* Forms */
-  form {
-    display: none;
-    flex-direction: column;
-    width: 100%;
-    max-width: 300px;
-  }
-  
-  .active-form {
-    display: flex;
-  }
-  
-  label {
-    margin-top: 0.5rem;
-    margin-bottom: 0.25rem;
-    font-weight: bold;
-  }
-  
-  input {
-    padding: 0.5rem;
-    margin-bottom: 0.5rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .button {
-    background: #4b6cb7;
-    color: white;
-    padding: 0.75rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 0.5rem;
-    transition: background 0.3s;
-  }
-  
-  .button:hover {
-    background: #3b5998;
-  }
-  
-  .message {
-    color: red;
-    margin-top: 1rem;
-    text-align: center;
-  }
-  
-  /* RIGHT SIDE: Welcome Back */
-  .split-right {
-    flex: 1;
-    background: linear-gradient(135deg, #4b6cb7, #182848);
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 2rem;
-  }
-  
-  .welcome-box {
-    max-width: 350px;
-    background: rgba(255, 255, 255, 0.1);
-    padding: 2rem;
-    border-radius: 10px;
-    backdrop-filter: blur(5px);
-  }
-  
-  .welcome-box h2 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-  }
-  
-  .welcome-box p {
-    font-size: 1rem;
-    line-height: 1.5;
-  }
+* { box-sizing: border-box; }
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+}
+
+/* Color palette to match dashboard */
+:root{
+  --primary: #16a34a;       /* emerald */
+  --primary-hover: #15803d; /* darker hover */
+  --deep: #065f46;          /* deep green for gradient end */
+  --light-surface: #ccc;
+  --border: #ccc;
+}
+
+/* --- Split Layout --- */
+.split-container {
+  display: flex;
+  height: 100vh;
+}
+
+/* LEFT SIDE: Logon */
+.split-left {
+  flex: 1;
+  background: var(--light-surface);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.split-left h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* Tab Buttons */
+.tab {
+  display: flex;
+  width: 100%;
+  max-width: 300px;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.tab-button {
+  flex: 1;
+  padding: 0.75rem;
+  cursor: pointer;
+  background: #eeeeee;
+  border: none;
+  font-size: 1rem;
+  transition: background 0.3s, color 0.3s;
+}
+
+.tab-button:hover { background: #e5e5e5; }
+
+.tab-button.active {
+  background: var(--primary);
+  color: #ffffff;
+}
+
+/* Forms */
+form {
+  display: none;
+  flex-direction: column;
+  width: 100%;
+  max-width: 300px;
+}
+
+.active-form { display: flex; }
+
+label {
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+  font-weight: bold;
+}
+
+input {
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Buttons (green) */
+.button {
+  background: var(--primary);
+  color: white;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background 0.3s;
+}
+
+.button:hover { background: var(--primary-hover); }
+
+.message {
+  color: red;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+/* RIGHT SIDE: Welcome Back */
+.split-right {
+  flex: 1;
+  background: linear-gradient(135deg, var(--primary), var(--deep));
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.welcome-box {
+  max-width: 350px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2rem;
+  border-radius: 10px;
+  backdrop-filter: blur(5px);
+}
+
+.welcome-box h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.welcome-box p {
+  font-size: 1rem;
+  line-height: 1.5;
+}

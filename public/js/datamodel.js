@@ -44,7 +44,7 @@ const DataModel = (function () {
                     method: 'GET',
                     headers: {
                         // we need to send the token in the headers
-                        'Authorization': token,
+                        'Authorization': 'Bearer ' + token,
                         'Content-Type': 'application/json',
                     },
                 });
@@ -66,6 +66,28 @@ const DataModel = (function () {
                 return [];
             }
         },
+        getReports: async function () {
+            if (!token) {
+                console.error("Token is not set, cannot fetch reports.");
+                return { totals: { income: 0, expenses: 0, net: 0 } };
+            }
+            try {
+                const response = await fetch('/api/reports', {
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
+                    },
+                });
+                if (!response.ok) {
+                    console.error("Error fetching reports:", await response.text());
+                    return { totals: { income: 0, expenses: 0, net: 0 } };
+                }
+                return await response.json();
+            } catch (e) {
+                console.error("Error fetching reports:", e);
+                return { totals: { income: 0, expenses: 0, net: 0 } };
+  }
+},
 
         //ADD MORE FUNCTIONS HERE TO FETCH DATA FROM THE SERVER
         //AND SEND DATA TO THE SERVER AS NEEDED

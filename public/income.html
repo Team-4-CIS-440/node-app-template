@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Income · Walletly</title>
+
+
+  <!-- Styles (uses your existing dashboard.css) -->
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <style>
+  /* ------- Income page form layout ------- */
+  .income-page .income-form{
+    display:flex; flex-direction:column; align-items:center; gap:18px;
+  }
+  .income-page .form-row{
+    width:100%; max-width:480px; text-align:center;
+  }
+  .income-page .form-row label{
+    display:block; margin-bottom:6px; font-size:14px; font-weight:700; color:#4b5563;
+  }
+  /* Green outlined inputs */
+  .income-page .outline-green{
+    width:100%;
+    padding:10px 12px;
+    border:2px solid #009e73;
+    border-radius:10px;
+    background:#fff;
+    outline:none;
+    transition: box-shadow .15s ease, border-color .15s ease;
+  }
+  .income-page .outline-green:focus{
+    box-shadow:0 0 0 3px rgba(0,158,115,.18);
+    border-color:#0a7254;
+  }
+  /* Radio group centered */
+  .income-page .source-group{
+    display:flex; justify-content:center; gap:18px; align-items:center;
+  }
+  .income-page .source-group input[type="radio"]{ accent-color:#009e73; }
+  /* Actions centered under the fields */
+  .income-page .form-actions{
+    display:flex; justify-content:center; gap:12px; margin-top:6px;
+  }
+  .income-page #saveBtn{
+    background:#009e73; color:#fff; border:2px solid #007e5d; border-radius:12px;
+    padding:10px 16px; font-weight:700; cursor:pointer;
+  }
+  .income-page #saveBtn:hover{ filter:brightness(.95); }
+  .income-page #resetBtn{
+    background:#fff; color:#0a7254; border:2px solid #009e73; border-radius:12px;
+    padding:10px 16px; font-weight:700; cursor:pointer;
+  }
+  .income-page #resetBtn:hover{ background:#f8fafc; }
+</style>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Page script -->
+  <script defer src="js/income.js"></script>
+</head>
+
+<!-- NOTE: class="income-page" scopes the extra styles so the dashboard UI is unchanged -->
+<body class="income-page">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="logo"><i class="bx bx-cube-alt"></i></div>
+
+    <nav class="menu">
+      <h1 class="menu-header">Menu</h1>
+
+      <div class="menu-item" data-tooltip="Dashboard">
+        <i class="bx bx-home-smile"></i>
+        <a href="/dashboard" style="text-decoration:none;color:inherit"><span>Dashboard</span></a>
+      </div>
+
+      <div class="menu-item nav-active" data-tooltip="Income">
+        <i class="bx bx-bar-chart-alt-2"></i><span>Income</span>
+      </div>
+
+      <div class="menu-item" data-tooltip="Budget & Expenses">
+        <i class="bx bx-cart"></i><span>Budget & Expenses</span>
+      </div>
+      <div class="menu-item" data-tooltip="Report">
+        <i class="bx bx-line-chart"></i><span>Report</span>
+      </div>
+      <div class="menu-item" data-tooltip="Settings">
+        <i class="bx bx-cog"></i><span>Settings</span>
+      </div>
+
+      <h1 class="menu-header">Shortcuts</h1>
+      <div class="menu-item" data-tooltip="Add"><i class="bx bx-add-to-queue"></i><span>Add</span></div>
+      <div class="menu-item" data-tooltip="Remove"><i class="bx bx-message-square-minus"></i><span>Remove</span></div>
+    </nav>
+
+    <div class="logout" data-tooltip="Logout" id="logoutLink">
+      <i class="bx bx-log-out"></i><span>Logout</span>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="dashboard-content">
+    <div class="header">
+      <h1>Income</h1>
+      <div>
+        <button id="refreshButton">Refresh</button>
+        <button id="logoutButton">Log Out</button>
+      </div>
+    </div>
+
+    <!-- Add / Edit (centered card) -->
+    <div class="kpi-cards">
+      <div class="card" style="max-width:860px;width:100%;">
+        <h2>Add / Edit Income</h2>
+        <!-- <form id="incomeForm" class="income-form" autocomplete="off">
+          <label>Date</label>
+          <input type="date" id="dateInput" required />
+
+          <label>Source</label>
+          <div class="source-group">
+            <label><input type="radio" name="source" value="Paycheck" checked> Paycheck</label>
+            <label><input type="radio" name="source" value="Tips"> Tips</label>
+            <label><input type="radio" name="source" value="Gift"> Gift</label>
+            <label><input type="radio" name="source" value="Other"> Other</label>
+          </div>
+
+          <label>Amount</label>
+          <input type="number" id="amountInput" step="0.01" min="0" required />
+
+          <label>Cadence</label>
+          <select id="cadenceInput">
+            <option value="monthly">Monthly</option>
+            <option value="weekly">Weekly</option>
+            <option value="one-time">One-time</option>
+          </select>
+
+          <input type="hidden" id="incomeId" />
+
+          <button type="submit" id="saveBtn">Save</button>
+          <button type="button" id="resetBtn">Clear</button>
+        </form> -->
+        <form id="incomeForm" class="income-form" autocomplete="off">
+            <input type="hidden" id="incomeId" />
+            
+            <div class="form-row">
+                <label for="dateInput">Date</label>
+                <input type="date" id="dateInput" class="outline-green" required />
+            </div>
+            
+            <div class="form-row">
+                <label>Source</label>
+                <div class="source-group">
+                    <label><input type="radio" name="source" value="Paycheck" checked> Paycheck</label>
+                    <label><input type="radio" name="source" value="Tips"> Tips</label>
+                    <label><input type="radio" name="source" value="Gift"> Gift</label>
+                    <label><input type="radio" name="source" value="Other"> Other</label>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <label for="amountInput">Amount</label>
+                <input type="text"
+                id="amountInput"
+                class="outline-green"
+                inputmode="decimal"
+                placeholder="$0.00"
+                required  />
+            </div>
+            
+            
+            <div class="form-row">
+                <label for="cadenceInput">Cadence</label>
+                <select id="cadenceInput" class="outline-green">
+                    <option value="monthly">Monthly</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="one-time">One-time</option>
+                </select>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" id="saveBtn">Save</button>
+                <button type="button" id="resetBtn">Clear</button>
+            </div>
+        </form>
+    </div>
+    </div>
+
+    <!-- Panels (two-column grid like dashboard), chart height capped -->
+    <div class="charts-grid">
+      <div class="chart-box">
+        <div class="chart-title-row" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <div class="chart-title">Income by Month</div>
+          <button class="ghost-btn" id="clearTrendBtn">Clear</button>
+        </div>
+        <!-- height attribute keeps the canvas from getting tall -->
+        <canvas id="incomeTrend" height="220"></canvas>
+      </div>
+
+      <div class="chart-box">
+        <div class="chart-title-row" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <div class="chart-title">All Income</div>
+          <button class="ghost-btn" id="clearTableBtn">Clear</button>
+        </div>
+        <div id="tableWrap" class="table-wrap">
+          <p>No income yet.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

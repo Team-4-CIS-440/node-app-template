@@ -25,6 +25,11 @@ app.get('/', (req, res) => {
 app.get('/dashboard', (req, res) => {
     res.sendFile(__dirname + '/public/dashboard.html');
 });
+// Route to serve income.html
+app.get('/income', (req, res) => {
+  res.sendFile(__dirname + '/public/income.html');
+});
+
 //////////////////////////////////////
 //END ROUTES TO SERVE HTML FILES
 //////////////////////////////////////
@@ -54,15 +59,20 @@ async function authenticateToken(req, res, next) {
     if (err) return res.status(401).json({ message: 'Invalid or expired token.' });
     try {
       const conn = await createConnection();
-      // make sure your table has an is_admin column (see SQL below)
+      // Query only the email (no is_admin column required)
       const [rows] = await conn.execute(
-        'SELECT email, is_admin FROM user WHERE email = ?',
+        'SELECT email FROM user WHERE email = ?',
         [decoded.email]
       );
       await conn.end();
-      if (!rows.length) return res.status(403).json({ message: 'Account not found or deactivated.' });
-      req.user = decoded;       // { email }
-      req.account = rows[0];    // { email, is_admin }
+
+      if (!rows.length) {
+        return res.status(403).json({ message: 'Account not found or deactivated.' });
+      }
+
+      // Attach to request; default to non-admin to keep authorizeAdmin working
+      req.user = decoded;                             // { email }
+      req.account = { email: rows[0].email, is_admin: 0 };
       next();
     } catch (e) {
       console.error(e);
@@ -70,6 +80,7 @@ async function authenticateToken(req, res, next) {
     }
   });
 }
+
 
 function authorizeAdmin(req, res, next) {
   if (!req.account?.is_admin) return res.status(403).json({ message: 'Admin privileges required.' });
@@ -335,23 +346,46 @@ app.delete('/api/expenses/:id', authenticateToken, async (req, res) => {
 });
 
 
-// ========== OPTIONAL: SIMPLE REPORTS ==========
+// ========== SIMPLE REPORTS ==========
 app.get('/api/reports', authenticateToken, async (req, res) => {
   const { from, to } = req.query;
   const range = (from && to) ? ' AND date BETWEEN ? AND ?' : '';
   const params = (from && to) ? [req.user.email, from, to] : [req.user.email];
+
   try {
     const conn = await createConnection();
-    const [inc]  = await conn.execute(`SELECT IFNULL(SUM(amount),0) AS income  FROM income  WHERE user_email=?${range}`, params);
-    const [exp]  = await conn.execute(`SELECT IFNULL(SUM(amount),0) AS expenses FROM expense WHERE user_email=?${range}`, params);
-    const [cats] = await conn.execute(
-      `SELECT category, SUM(amount) total FROM expense WHERE user_email=?${range} GROUP BY category ORDER BY total DESC`,
+
+    const [inc] = await conn.execute(
+      `SELECT IFNULL(SUM(amount), 0) AS income
+         FROM income
+        WHERE user_email=?${range}`,
       params
     );
+
+    const [exp] = await conn.execute(
+      `SELECT IFNULL(SUM(amount), 0) AS expenses
+         FROM expense
+        WHERE user_email=?${range}`,
+      params
+    );
+
+    const [cats] = await conn.execute(
+      `SELECT category, SUM(amount) AS total
+         FROM expense
+        WHERE user_email=?${range}
+        GROUP BY category
+        ORDER BY total DESC`,
+      params
+    );
+
     await conn.end();
+
+    const income = Number(inc?.[0]?.income || 0);
+    const expenses = Number(exp?.[0]?.expenses || 0);
+
     res.json({
-      totals: { income: Number(inc[0].income), expenses: Number(exp[0].expenses), net: Number(inc[0].income) - Number(exp[0].expenses) },
-      expensesByCategory: cats
+      totals: { income, expenses, net: income - expenses },
+      expensesByCategory: cats || []
     });
   } catch (e) {
     console.error(e);
