@@ -6,46 +6,74 @@
     <title>Dashboard</title>
 
     <!-- CSS -->
-    <link rel="stylesheet" href="/css/dashboard.css" />
-    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/dashboard.css" />
 
-    <!-- Chart.js -->
+    <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- JS -->
+    <script src="dashboard.js"></script>
   </head>
 
-  <body class="dashboard-page">
+  <body>
     <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
-      <div class="logo"><i class="bx bx-cube-alt"></i></div>
+      <aside class="sidebar" id="sidebar">
+    <div class="logo">
+      <i class="bx bx-cube-alt"></i>
+    </div>
 
-      <nav class="menu">
-        <h1 class="menu-header">Menu</h1>
+    <nav class="menu">
+      <h1 class="menu-header">Menu</h1>
 
-        <div class="menu-item nav-active" data-tooltip="Dashboard">
-          <i class="bx bx-home-smile"></i><span>Dashboard</span>
-        </div>
+      <div class="menu-item nav-active" data-tooltip="Dashboard">
+        <i class="bx bx-home-smile"></i>
+        <span>Dashboard</span>
+      </div>
 
-        <div class="menu-item" data-tooltip="Income">
-          <i class="bx bx-bar-chart-alt-2"></i>
-          <a href="/income" style="text-decoration:none;color:inherit"><span>Income</span></a>
-        </div>
+      <div class="menu-item" data-tooltip="Income">
+        <i class="bx bx-bar-chart-alt-2"></i>
+        <span>Income</span>
+      </div>
 
-        <div class="menu-item" data-tooltip="Report">
-          <i class="bx bx-line-chart"></i><span>Report</span>
-        </div>
+      <div class="menu-item" data-tooltip="Expenses">
+        <i class="bx bx-cart"></i>
+        <span>Expenses</span>
+      </div>
 
-        <div class="menu-item" data-tooltip="Settings">
-          <i class="bx bx-cog"></i><span>Settings</span>
-        </div>
+      <div class="menu-item" data-tooltip="Budget">
+        <i class="bx bx-wallet"></i> <!-- Updated icon -->
+        <span>Budget</span>
+      </div>
 
-        <h1 class="menu-header shortcuts">Shortcuts</h1>
-        <div class="menu-item" data-tooltip="Add"><i class="bx bx-add-to-queue"></i><span>Add</span></div>
-        <div class="menu-item" data-tooltip="Remove"><i class="bx bx-message-square-minus"></i><span>Remove</span></div>
-      </nav>
+      <div class="menu-item" data-tooltip="Report">
+        <i class="bx bx-line-chart"></i>
+        <span>Report</span>
+      </div>
 
+      <div class="menu-item" data-tooltip="Settings">
+        <i class="bx bx-cog"></i>
+        <span>Settings</span>
+      </div>
+
+      <h1 class="menu-header shortcuts">Shortcuts</h1>
+
+      <div class="menu-item" data-tooltip="Add">
+        <i class="bx bx-add-to-queue"></i>
+        <span>Add</span>
+      </div>
+
+      <div class="menu-item" data-tooltip="Remove">
+        <i class="bx bx-message-square-minus"></i>
+        <span>Remove</span>
+      </div>
+    </nav>
+
+      <!-- Logout -->
       <div class="logout" data-tooltip="Logout">
-        <i class="bx bx-log-out"></i><span>Logout</span>
+        <i class="bx bx-log-out"></i>
+        <span>Logout</span>
       </div>
     </aside>
 
@@ -63,19 +91,19 @@
       <div class="kpi-cards">
         <div class="card income">
           <h2>Total Income</h2>
-          <p id="kpiIncome">No data</p>
+          <p>$6,800</p>
         </div>
         <div class="card expenses">
           <h2>Total Expenses</h2>
-          <p id="kpiExpenses">No data</p>
+          <p>$3,400</p>
         </div>
         <div class="card budget">
           <h2>Monthly Budget</h2>
-          <p id="kpiBudget">No data</p>
+          <p>$5,000</p>
         </div>
       </div>
 
-      <!-- Charts: keep three cards, only income is populated -->
+      <!-- Charts Section -->
       <div class="charts-grid">
         <div class="chart-box">
           <div class="chart-title">Monthly Income Trend</div>
@@ -84,15 +112,17 @@
 
         <div class="chart-box">
           <div class="chart-title">Expense Breakdown by Category</div>
-          <div class="chart-placeholder"></div>
+          <canvas id="expenseChart"></canvas>
         </div>
 
         <div class="chart-box">
-          <div class="chart-title">Budget vs Actual</div>
-          <div class="chart-placeholder"></div>
+          <div class="chart-title">Budget vs Actual Spending</div>
+          <canvas id="budgetChart"></canvas>
         </div>
       </div>
     </main>
+  </body>
+</html>
 
     <!-- Scripts -->
     <script src="/js/datamodel.js"></script>
