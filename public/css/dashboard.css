@@ -534,3 +534,302 @@ button:hover {
   letter-spacing: 0;
   text-transform: none;
 }
+/* ================= Expense page (scoped) ================= */
+.expense-page .card h2 {
+  font-size: 13px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: 10px;
+}
+
+.expense-page .expense-form {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(12, 1fr);
+  align-items: end;
+}
+
+.expense-page .expense-form .form-row > label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #4b5563;
+  margin-bottom: 8px;
+}
+
+.expense-page .expense-form input,
+.expense-page .expense-form select {
+  grid-column: span 4;
+  padding: 10px 12px;
+  border: 1px solid #e7ecf6;
+  border-radius: 10px;
+  background: #fff;
+  outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+
+.expense-page .expense-form input:focus,
+.expense-page .expense-form select:focus {
+  border-color: #009e73;
+  box-shadow: 0 0 0 3px rgba(0, 158, 115, .15);
+}
+
+.expense-page .expense-form #saveBtn {
+  grid-column: span 2;
+  background-color: #009e73;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.expense-page .expense-form #saveBtn:hover {
+  filter: brightness(.95);
+}
+
+.expense-page .expense-form #resetBtn {
+  grid-column: span 2;
+  background: #fff;
+  color: #0a7254;
+  border: 1px solid #e7ecf6;
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.expense-page .expense-form #resetBtn:hover {
+  background: #f8fafc;
+}
+
+.expense-page .table-wrap {
+  overflow: auto;
+  border-radius: 12px;
+}
+.expense-page .data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fff;
+  border: 1px solid #e7ecf6;
+  border-radius: 12px;
+}
+.expense-page .data-table thead th {
+  position: sticky;
+  top: 0;
+  background: #f8fafc;
+  text-align: left;
+  font-weight: 700;
+  color: #0f172a;
+  padding: 12px 14px;
+  border-bottom: 1px solid #e7ecf6;
+}
+.expense-page .data-table tbody td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #e7ecf6;
+  color: #111827;
+}
+.expense-page .data-table tbody tr:nth-child(even) {
+  background: #fcfdff;
+}
+.expense-page .data-table tbody tr:hover {
+  background: #f6fbf9;
+}
+
+.expense-page .data-table button {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #e7ecf6;
+  background: #fff;
+  color: #0f172a;
+  cursor: pointer;
+  margin-right: 6px;
+  transition: background .15s ease;
+}
+.expense-page .data-table button:hover {
+  background: #f8fafc;
+}
+.expense-page .data-table .delBtn {
+  color: #ff4c60;
+}
+
+.expense-page .chart-title {
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 960px) {
+  .expense-page .expense-form input,
+  .expense-page .expense-form select {
+    grid-column: span 6;
+  }
+  .expense-page .expense-form #saveBtn,
+  .expense-page .expense-form #resetBtn {
+    grid-column: span 6;
+  }
+}
+@media (max-width: 640px) {
+  .expense-page .expense-form input,
+  .expense-page .expense-form select {
+    grid-column: span 12;
+  }
+}
+
+.expense-page .kpi-cards {
+  display: flex;
+  justify-content: center;
+}
+.expense-page .kpi-cards .card {
+  max-width: 860px;
+  width: 100%;
+}
+
+.expense-page .expense-form input[type="date"],
+.expense-page .expense-form input[type="number"],
+.expense-page .expense-form select {
+  border: 1px solid transparent;
+  background: transparent;
+  border-radius: 10px;
+  padding: 10px 12px;
+  transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.expense-page .expense-form input:focus,
+.expense-page .expense-form select:focus {
+  border-color: #e7ecf6;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(0, 158, 115, .15);
+}
+
+.expense-page .source-group {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.expense-page .source-group input[type="radio"] {
+  accent-color: #009e73;
+}
+
+.expense-page .chart-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.expense-page .ghost-btn {
+  background: transparent;
+  color: #0a7254;
+  border: 1px solid #e7ecf6;
+  border-radius: 10px;
+  padding: 6px 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.expense-page .ghost-btn:hover {
+  background: #f8fafc;
+}
+
+.expense-page .table-wrap {
+  overflow: auto;
+  border-radius: 12px;
+}
+.expense-page .data-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fff;
+  border: 1px solid #e7ecf6;
+  border-radius: 12px;
+}
+.expense-page .data-table thead th {
+  background: #f8fafc;
+  text-align: left;
+  font-weight: 700;
+  color: #0f172a;
+  padding: 12px 14px;
+  border-bottom: 1px solid #e7ecf6;
+}
+.expense-page .data-table tbody td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #e7ecf6;
+  color: #111827;
+}
+.expense-page .data-table tbody tr:nth-child(even) {
+  background: #fcfdff;
+}
+.expense-page .data-table tbody tr:hover {
+  background: #f6fbf9;
+}
+.expense-page .data-table button {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #e7ecf6;
+  background: #fff;
+  cursor: pointer;
+  margin-right: 6px;
+}
+.expense-page .data-table button:hover {
+  background: #f8fafc;
+}
+.expense-page .data-table .delBtn {
+  color: #ff4c60;
+}
+
+.expense-page .kpi-cards {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+.expense-page .kpi-cards .card {
+  max-width: 780px;
+  width: 100%;
+  padding: 18px 22px;
+}
+.expense-page .kpi-cards .card h2 {
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.expense-page .expense-form {
+  gap: 14px;
+}
+.expense-page .form-row {
+  max-width: 420px;
+}
+.expense-page .expense-form .form-row label {
+  font-size: 15px;
+  margin-bottom: 6px;
+}
+
+.expense-page .outline-green {
+  padding: 10px 12px;
+  border: 2px solid #0a7254;
+  border-radius: 10px;
+  box-shadow: 0 0 0 2px rgba(10, 114, 84, .10);
+}
+.expense-page .outline-green:focus {
+  border-color: #086146;
+  box-shadow: 0 0 0 3px rgba(10, 114, 84, .16);
+}
+
+.expense-page .source-group {
+  gap: 14px;
+}
+.expense-page .form-actions {
+  gap: 10px;
+  margin-top: 6px;
+}
+.expense-page #saveBtn,
+.expense-page #resetBtn {
+  padding: 9px 16px;
+}
+
+.expense-page #expenseTrend {
+  height: 220px !important;
+}
+
+.expense-page .expense-form .form-row .source-group label {
+  font-weight: 400 !important;
+  letter-spacing: 0;
+  text-transform: none;
+}
