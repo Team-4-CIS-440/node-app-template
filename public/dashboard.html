@@ -3,8 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard</title>
+    <title>Dabang Dashboard</title>
 
+<<<<<<< HEAD
     <!-- CSS -->
     <link rel="stylesheet" href="css/dashboard.css" />
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
@@ -15,10 +16,26 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- JS -->
     <script src="dashboard.js"></script>
+=======
+    <link rel="stylesheet" href="css/dashboard.css" />
+
+    <!-- Boxicons (for icons) -->
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+>>>>>>> parent of 089b583 (income page and backend logic)
   </head>
 
   <body>
     <!-- Sidebar -->
+<<<<<<< HEAD
       <aside class="sidebar" id="sidebar">
     <div class="logo">
       <i class="bx bx-cube-alt"></i>
@@ -70,6 +87,55 @@
       </div>
     </nav>
 
+=======
+    <aside class="sidebar" id="sidebar">
+      <div class="logo">
+        <i class="bx bx-cube-alt"></i>
+      </div>
+
+      <nav class="menu">
+        <h1 class="menu-header">Menu</h1>
+        <div class="menu-item nav-active" data-tooltip="Dashboard">
+          <i class="bx bx-home-smile"></i>
+          <span>Dashboard</span>
+        </div>
+        <div class="menu-item" data-tooltip="Leaderboard">
+          <i class="bx bx-bar-chart-alt-2"></i>
+          <span>Leaderboard</span>
+        </div>
+        <div class="menu-item" data-tooltip="Orders">
+          <i class="bx bx-cart"></i>
+          <span>Orders</span>
+        </div>
+        <div class="menu-item" data-tooltip="Products">
+          <i class="bx bx-package"></i>
+          <span>Products</span>
+        </div>
+        <div class="menu-item" data-tooltip="Sales Report">
+          <i class="bx bx-line-chart"></i>
+          <span>Sales Report</span>
+        </div>
+        <div class="menu-item" data-tooltip="Messages">
+          <i class="bx bx-chat"></i>
+          <span>Messages</span>
+        </div>
+        <div class="menu-item" data-tooltip="Settings">
+          <i class="bx bx-cog"></i>
+          <span>Settings</span>
+        </div>
+
+        <h1 class="menu-header shortcuts">Shortcuts</h1>
+        <div class="menu-item" data-tooltip="Add">
+          <i class="bx bx-add-to-queue"></i>
+          <span>Add</span>
+        </div>
+        <div class="menu-item" data-tooltip="Remove">
+          <i class="bx bx-message-square-minus"></i>
+          <span>Remove</span>
+        </div>
+      </nav>
+
+>>>>>>> parent of 089b583 (income page and backend logic)
       <!-- Logout -->
       <div class="logout" data-tooltip="Logout">
         <i class="bx bx-log-out"></i>
@@ -77,16 +143,17 @@
       </div>
     </aside>
 
-    <!-- Main Content -->
+    <!-- Main Dashboard Content -->
     <main class="dashboard-content">
       <div class="header">
-        <h1>Welcome, <span id="userName">User</span>!</h1>
+        <h1>Users</h1>
         <div>
-          <button id="refreshButton">Refresh</button>
+          <button id="refreshButton">Refresh List</button>
           <button id="logoutButton">Log Out</button>
         </div>
       </div>
 
+<<<<<<< HEAD
       <!-- KPI Cards -->
       <div class="kpi-cards">
         <div class="card income">
@@ -120,12 +187,15 @@
           <canvas id="budgetChart"></canvas>
         </div>
       </div>
+=======
+      <div class="user-list" id="userList"></div>
+>>>>>>> parent of 089b583 (income page and backend logic)
     </main>
   </body>
 </html>
 
-    <!-- Scripts -->
-    <script src="/js/datamodel.js"></script>
-    <script src="/js/dashboard.js"></script>
+    <!-- JS (ensure these files exist in /public/js) -->
+    <script src="js/datamodel.js"></script>
+    <script src="js/dashboard.js"></script>
   </body>
 </html>
