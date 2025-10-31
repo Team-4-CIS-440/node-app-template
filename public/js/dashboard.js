@@ -24,6 +24,17 @@ const toNum = (v) => {
   return Number.isFinite(n) ? n : 0;
 };
 
+// --- small date helpers ---
+const pad2 = (n) => String(n).padStart(2, '0');
+// "YYYY-MM" -> "Oct '25"
+function formatMonthLabel(yyyyMm) {
+  const d = new Date(`${yyyyMm}-01T00:00:00`);
+  if (isNaN(d)) return yyyyMm;
+  const mon = d.toLocaleString('en-US', { month: 'short' });
+  const yy  = String(d.getFullYear()).slice(-2);
+  return `${mon} '${yy}`;
+}
+
 // --- KPIs (try reports + client sums, then pick best) ---
 async function loadKPIs() {
   const incomeEl = document.getElementById('kpiIncome');
@@ -46,9 +57,7 @@ async function loadKPIs() {
   // 1) preferred: server /api/reports
   const pReports = (async () => {
     try {
-      const data = (typeof DataModel?.getReports === 'function')
-        ? await DataModel.getReports()
-        : await fetchJSON('/api/reports'); // { totals:{income,expenses,net} }
+      const data = await fetchJSON('/api/reports'); // { totals:{income,expenses,net} }
       reportsTotals = {
         income:   toNum(data?.totals?.income),
         expenses: toNum(data?.totals?.expenses),
@@ -99,6 +108,49 @@ async function loadKPIs() {
 }
 
 // --- Income chart (real data from /api/income) ---
+// let incomeChart;
+// async function loadIncomeChart() {
+//   const canvas = document.getElementById('incomeChart');
+//   if (!canvas) return;
+
+//   try {
+//     const data = await fetchJSON('/api/income'); // { items: [...] }
+//     const rows = Array.isArray(data?.items) ? data.items : [];
+
+//     // group by YYYY-MM
+//     const byMonth = {};
+//     for (const r of rows) {
+//       const key = String(r.date || '').slice(0, 7); // YYYY-MM
+//       if (!key) continue;
+//       byMonth[key] = (byMonth[key] || 0) + toNum(r.amount);
+//     }
+//     const labels = Object.keys(byMonth).sort();
+//     const values = labels.map(k => byMonth[k]);
+
+//     // draw
+//     if (incomeChart) incomeChart.destroy();
+//     incomeChart = new Chart(canvas, {
+//       type: 'line',
+//       data: {
+//         labels: labels.map(formatMonthLabel),
+//         datasets: [{ label: 'Monthly Income ($)', data: values, fill: true, tension: 0.35 }]
+//       },
+//       options: {
+//         responsive: true,
+//         plugins: { legend: { position: 'top' } },
+//         scales: {
+//           y: {
+//             beginAtZero: true,
+//             ticks: { callback: (v) => money.format(v) }
+//           }
+//         }
+//       }
+//     });
+//   } catch (e) {
+//     console.error('[Chart] failed to load income chart:', e?.message || e);
+//   }
+// }
+// --- Income chart (real data from /api/income) ---
 let incomeChart;
 async function loadIncomeChart() {
   const canvas = document.getElementById('incomeChart');
@@ -118,19 +170,121 @@ async function loadIncomeChart() {
     const labels = Object.keys(byMonth).sort();
     const values = labels.map(k => byMonth[k]);
 
-    // draw
     if (incomeChart) incomeChart.destroy();
     incomeChart = new Chart(canvas, {
       type: 'line',
-      data: { labels, datasets: [{ label: 'Monthly Income ($)', data: values, fill: true, tension: 0.35 }] },
+      data: {
+        labels: labels.map(formatMonthLabel),
+        datasets: [{
+          label: 'Monthly Income ($)',
+          data: values,
+          fill: true,
+          tension: 0.35
+        }]
+      },
       options: {
         responsive: true,
-        plugins: { legend: { position: 'top' } },
-        scales: { y: { beginAtZero: true } }
+        plugins: {
+          legend: {
+            position: 'bottom',
+            labels: {
+              boxWidth: 10,     // smaller color box
+              boxHeight: 10,
+              padding: 6,       // tighter spacing
+              font: { size: 12 } // smaller font
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: { callback: (v) => money.format(v) }
+          }
+        },
+        elements: {
+          point: { radius: 2 },  // optional: smaller points to match the compact legend
+          line:  { borderWidth: 2 }
+        }
       }
     });
   } catch (e) {
     console.error('[Chart] failed to load income chart:', e?.message || e);
+  }
+}
+
+
+// ===== Expenses by Category (doughnut) =====
+let categoryChart; // doughnut for expenses by category
+
+async function fetchReports(rangeParams = '') {
+  const r = await fetch('/api/reports' + rangeParams, { headers: authHeaders() }); // <-- fixed
+  if (!r.ok) throw new Error('Failed to load reports');
+  return r.json(); // { totals: {income, expenses, net}, expensesByCategory: [{category,total}, ...] }
+}
+
+function renderCategoryChart(expensesByCategory = []) {
+  const canvas = document.getElementById('categoryChart');
+  const emptyMsg = document.getElementById('categoryChartEmpty');
+  if (!canvas) return;
+
+  // Show/Hide empty message
+  const hasData = Array.isArray(expensesByCategory) && expensesByCategory.length > 0;
+  canvas.style.display = hasData ? 'block' : 'none';
+  if (emptyMsg) emptyMsg.style.display = hasData ? 'none' : 'block';
+  if (!hasData) {
+    if (categoryChart) { categoryChart.destroy(); categoryChart = null; }
+    return;
+  }
+
+  const labels = expensesByCategory.map(x => x.category ?? 'Unknown');
+  const values = expensesByCategory.map(x => Number(x.total || 0));
+
+  // Nice, soft palette
+  const palette = [
+    '#4F46E5','#10B981','#F59E0B','#EF4444','#06B6D4',
+    '#8B5CF6','#84CC16','#F97316','#14B8A6','#EC4899'
+  ];
+
+  if (categoryChart) categoryChart.destroy();
+  const ctx = canvas.getContext('2d');
+  const total = values.reduce((a,b) => a + b, 0);
+
+  categoryChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels,
+      datasets: [{
+        data: values,
+        backgroundColor: labels.map((_, i) => palette[i % palette.length]),
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'right', labels: { boxWidth: 14 } },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              const v = ctx.parsed ?? 0;
+              const pct = total ? (v / total) * 100 : 0;
+              return `${ctx.label}: ${money.format(v)} (${pct.toFixed(1)}%)`;
+            }
+          }
+        }
+      },
+      cutout: '55%' // ring
+    }
+  });
+}
+
+async function loadExpenseCategoryChart() {
+  try {
+    const reports = await fetchReports(); // add ?from=&to= if you wire range chips later
+    renderCategoryChart(reports.expensesByCategory || []);
+  } catch (e) {
+    console.error('[CategoryChart] failed:', e?.message || e);
   }
 }
 
@@ -164,6 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
     refreshButton.addEventListener('click', () => {
       loadKPIs();
       loadIncomeChart();
+      loadExpenseCategoryChart(); // refresh the doughnut too
     });
   }
 
@@ -173,18 +328,17 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.href = '/';
     return;
   }
-  if (typeof DataModel !== 'undefined' && typeof DataModel.setToken === 'function') {
-    DataModel.setToken(token);
-  }
 
   renderUserNameFromJWT();
   loadKPIs();
   loadIncomeChart();
+  loadExpenseCategoryChart();
 
-  // Refresh once if income page set the flag
+  // Refresh once if income/expense page set the flag
   if (localStorage.getItem('refreshDashboard') === 'true') {
     loadKPIs();
     loadIncomeChart();
+    loadExpenseCategoryChart();
     localStorage.removeItem('refreshDashboard');
-    }
+  }
 }); // end DOMContentLoaded

@@ -1,8 +1,5 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+/* ========== Base ========== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
   font-family: "Poppins", sans-serif;
@@ -10,6 +7,7 @@ body {
   display: flex;
 }
 
+/* ========== Sidebar ========== */
 .sidebar {
   width: 280px;
   min-height: 100vh;
@@ -21,516 +19,242 @@ body {
   padding: 40px 20px;
   position: relative;
 }
-
-.logo {
-  font-size: 24px;
-  color: #009e73;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
-}
-
-.menu-header {
-  font-size: 14px;
-  text-transform: uppercase;
-  margin: 20px 0 10px;
-  color: #999;
-}
-
+.logo { font-size: 24px; color: #009e73; display: flex; justify-content: center; margin-bottom: 20px; }
+.menu-header { font-size: 14px; text-transform: uppercase; margin: 20px 0 10px; color: #999; }
 .menu-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
-  color: #444;
-  cursor: pointer;
-  border-radius: 10px;
-  transition: 0.2s ease;
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 12px; color: #444; cursor: pointer;
+  border-radius: 10px; transition: 0.2s ease;
 }
-
-.menu-item:hover,
-.menu-item.nav-active {
-  background-color: #009e73;
-  color: white;
-}
-
-.menu-item i {
-  font-size: 20px;
-}
-
+.menu-item:hover, .menu-item.nav-active { background-color: #009e73; color: #fff; }
+.menu-item i { font-size: 20px; }
 .logout {
-  margin-top: auto;
-  padding: 10px 12px;
-  color: #444;
-  cursor: pointer;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  transition: 0.2s ease;
+  margin-top: auto; padding: 10px 12px; color: #444;
+  cursor: pointer; border-radius: 10px; display: flex; align-items: center; gap: 10px; transition: 0.2s ease;
 }
-
-.logout:hover {
-  background-color: #ff4c60;
-  color: white;
-}
+.logout:hover { background-color: #ff4c60; color: #fff; }
 
 .toggle-menu {
-  position: absolute;
-  right: -20px;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: #009e73;
-  color: white;
-  padding: 8px;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  position: absolute; right: -20px; top: 50%; transform: translateY(-50%);
+  background-color: #009e73; color: #fff; padding: 8px; border-radius: 50%;
+  cursor: pointer; display: flex; flex-direction: column; gap: 4px;
 }
+.toggle-menu i { font-size: 16px; }
 
-.toggle-menu i {
-  font-size: 16px;
-}
-
-/* Main content */
-.dashboard-content {
-  flex-grow: 1;
-  padding: 30px;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 25px;
-}
-
-.header h1 {
-  font-size: 28px;
-  font-weight: 600;
-}
+/* ========== Main ========== */
+.dashboard-content { flex-grow: 1; padding: 30px; }
+.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+.header h1 { font-size: 28px; font-weight: 600; }
 
 button {
-  margin-left: 10px;
-  padding: 8px 16px;
-  background-color: #009e73;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
+  margin-left: 10px; padding: 8px 16px;
+  background-color: #009e73; color: #fff; border: none; border-radius: 6px;
+  cursor: pointer; font-weight: 500;
 }
+button:hover { background-color: #009e73; }
 
-button:hover {
-  background-color: #009e73;
-}
-
-.user-list {
-  background: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
-}
-
-/* KPI CARDS */
-.kpi-cards {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 30px;
-  flex-wrap: wrap;
-}
-
+/* ========== Cards / KPIs ========== */
+.kpi-cards { display: flex; gap: 20px; margin-bottom: 30px; flex-wrap: wrap; }
 .card {
-  flex: 1;
-  min-width: 220px;
-  background: #fff;
-  padding: 20px;
+  flex: 1; min-width: 220px; background: #fff; padding: 20px; border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); text-align: center; transition: transform 0.2s ease;
+}
+.card:hover { transform: translateY(-4px); }
+.card h2 { font-size: 14px; color: #888; margin-bottom: 8px; text-transform: uppercase; }
+.card p { font-size: 24px; font-weight: 600; color: #333; }
+.card.income p { color: #009e73; }
+.card.expenses p { color: #ff4c60; }
+.card.budget p { color: #1e88e5; }
+
+/* ========== Charts ========== */
+.charts-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-top: 30px; }
+.chart-box { background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); min-height: 300px; }
+.chart-placeholder { height: 240px; }
+
+/* Give extra space between "Monthly Income Trend" title and its chart */
+#incomeChart {
+  display: block;         /* ensures margin works reliably */
+  margin-top: 20px !important;
+}
+
+/* ========== Tables (shared) ========== */
+.table-wrap { overflow-x: auto; border-radius: 12px; }
+.data-table {
+  width: 100%; border-collapse: separate; border-spacing: 0;
+  background: #fff; border: 1px solid #e7ecf6; border-radius: 12px;
+}
+.data-table thead th {
+  position: sticky; top: 0; background: #f8fafc; text-align: left;
+  font-weight: 700; color: #0f172a; padding: 12px 14px; border-bottom: 1px solid #e7ecf6;
+}
+.data-table tbody td { padding: 12px 14px; border-bottom: 1px solid #e7ecf6; color: #111827; }
+.data-table tbody tr:nth-child(even) { background: #fcfdff; }
+.data-table tbody tr:hover { background: #f6fbf9; }
+.data-table button {
+  padding: 6px 10px; border-radius: 8px; border: 1px solid #e7ecf6; background: #fff;
+  color: #0f172a; cursor: pointer; margin-right: 6px; transition: background .15s ease;
+}
+.data-table button:hover { background: #f8fafc; }
+.data-table .delBtn { color: #ff4c60; }
+
+/* =========================================================
+   Income + Expense: unified form look (green outlines, same widths)
+   ========================================================= */
+:root {
+  /* One knob to control input width on both pages */
+  --form-max: 420px;
+}
+
+/* Center the big edit card on both pages (same max width) */
+.income-page .kpi-cards,
+.expense-page .kpi-cards { display: flex; justify-content: center; }
+
+.income-page .kpi-cards .card,
+.expense-page .kpi-cards .card {
+  max-width: 860px; width: 100%;
+  padding: 24px 28px;
+  background: #fff; border-radius: 16px; box-shadow: 0 6px 20px rgba(17, 24, 39, 0.06);
+}
+
+/* Section titles inside those cards */
+.income-page .kpi-cards .card h2,
+.expense-page .kpi-cards .card h2 {
+  text-align: center; font-weight: 700; font-size: 20px;
+  color: #6b7280; letter-spacing: .06em; text-transform: uppercase;
+  margin: 4px 0 16px;
+}
+
+/* Form stacks */
+.income-page .income-form,
+.expense-page .expense-form { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+
+/* Rows and labels (same width + type) */
+.income-page .form-row,
+.expense-page .form-row { width: 100%; max-width: var(--form-max); text-align: center; }
+
+.income-page .form-row label,
+.expense-page .form-row label {
+  display: block; margin-bottom: 6px; font-size: 14px; font-weight: 700; color: #4b5563;
+}
+
+/* Green-outline controls on BOTH pages */
+.income-page .outline-green,
+.expense-page .outline-green,
+.income-page input[type="text"].outline-green,
+.income-page input[type="date"].outline-green,
+.income-page select.outline-green {
+  width: 100%; padding: 10px 12px;
+  border: 2px solid #009e73; border-radius: 10px; background: #fff; outline: none;
+  transition: box-shadow .15s ease, border-color .15s ease;
+}
+.income-page .outline-green:focus,
+.expense-page .outline-green:focus { box-shadow: 0 0 0 3px rgba(0,158,115,.18); border-color: #0a7254; }
+
+/* Radio accent + group alignment */
+.income-page input[type="radio"],
+.expense-page input[type="radio"] { accent-color: #009e73; }
+.income-page .source-group,
+.expense-page .category-group { display: flex; justify-content: center; gap: 18px; align-items: center; }
+
+/* Actions/buttons identical */
+.income-page .form-actions,
+.expense-page .form-actions { display: flex; justify-content: center; gap: 12px; margin-top: 6px; }
+.income-page #saveBtn, .expense-page #saveBtn {
+  background: #009e73; color: #fff; border: 2px solid #007e5d; border-radius: 12px;
+  padding: 10px 16px; font-weight: 700; cursor: pointer;
+}
+.income-page #saveBtn:hover, .expense-page #saveBtn:hover { filter: brightness(.95); }
+.income-page #resetBtn, .expense-page #resetBtn {
+  background: #fff; color: #0a7254; border: 2px solid #009e73; border-radius: 12px;
+  padding: 10px 16px; font-weight: 700; cursor: pointer;
+}
+.income-page #resetBtn:hover, .expense-page #resetBtn:hover { background: #f8fafc; }
+
+/* Chart titles/ghost buttons (match across pages) */
+.income-page .chart-title-row,
+.expense-page .chart-title-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.income-page .ghost-btn, .expense-page .ghost-btn {
+  background: transparent; color: #0a7254; border: 1px solid #e7ecf6; border-radius: 10px;
+  padding: 6px 10px; font-weight: 600; cursor: pointer;
+}
+.income-page .ghost-btn:hover, .expense-page .ghost-btn:hover { background: #f8fafc; }
+
+/* Optional: cap line chart canvas height */
+#incomeTrend, #expenseTrend { height: 220px !important; }
+
+/* Keep data tables in a fixed-height box with scroll */
+.income-page .table-wrap,
+.expense-page .table-wrap{
+  max-height: 360px;     /* adjust as you like */
+  overflow: auto;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  text-align: center;
-  transition: transform 0.2s ease;
-}
-
-.card:hover {
-  transform: translateY(-4px);
-}
-
-.card h2 {
-  font-size: 14px;
-  color: #888;
-  margin-bottom: 8px;
-  text-transform: uppercase;
-}
-
-.card p {
-  font-size: 24px;
-  font-weight: 600;
-  color: #333;
-}
-
-.card.income p {
-  color: #009e73;
-}
-
-.card.expenses p {
-  color: #ff4c60;
-}
-
-.card.budget p {
-  color: #1e88e5;
-}
-
-/* CHARTS */
-.charts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-  margin-top: 30px;
-}
-
-.chart-box {
-  background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  min-height: 300px;
-}
-.chart-placeholder { height: 240px; }     
-
-.income-form input, .income-form select, .income-form button {
-  padding: 10px; border-radius: 10px; border: 1px solid var(--card-border);
-}
-.income-form button { background: var(--primary); color:#fff; border:none; margin-right:.5rem; cursor:pointer; }
-.income-form button#resetBtn { background:#fff; color:var(--primary-dark); border:1px solid var(--card-border); }
-.table-wrap { overflow-x:auto; }
-.data-table { width:100%; border-collapse:separate; border-spacing:0; }
-.data-table thead th { padding:12px 14px; border-bottom:1px solid var(--card-border); color:var(--primary-dark); }
-.data-table tbody td { padding:12px 14px; border-bottom:1px solid var(--card-border); }
-.data-table button { padding:6px 10px; border-radius:8px; border:1px solid var(--card-border); background:#fff; cursor:pointer; margin-right:6px; }
-.data-table button:hover { background:#f8fafc; }
-
-/* ================= Income page (scoped) ================= */
-.income-page .card h2{
-  font-size: 13px;
-  color: #888;
-  text-transform: uppercase;
-  letter-spacing: .08em;
-  margin-bottom: 10px;
-}
-
-/* Form layout */
-.income-page .income-form{
-  display: grid;
-  gap: 12px;
-  grid-template-columns: repeat(12, 1fr);
-  align-items: end;
-}
-
-/* .income-page .income-form label{
-  grid-column: span 12;
-  font-size: 12px;
-  font-weight: 600;
-  color: #6b7280;
-  letter-spacing: .03em;
-} */
-.income-page .income-form .form-row > label{
-  font-size: 16px;
-  font-weight: 700;
-  color:#4b5563;
-  margin-bottom: 8px;
-}
-
-/* Inputs/selects — match dashboard card look */
-.income-page .income-form input,
-.income-page .income-form select{
-  grid-column: span 4;
-  padding: 10px 12px;
-  border: 1px solid #e7ecf6;    /* same border tone as cards */
-  border-radius: 10px;
-  background: #fff;
-  outline: none;
-  transition: border-color .15s ease, box-shadow .15s ease;
-}
-
-/* Focus ring in brand green (#009e73) */
-.income-page .income-form input:focus,
-.income-page .income-form select:focus{
-  border-color: #009e73;
-  box-shadow: 0 0 0 3px rgba(0,158,115,.15);
-}
-
-/* Buttons inside form */
-.income-page .income-form #saveBtn{
-  grid-column: span 2;
-  background-color: #009e73; /* same as dashboard buttons */
-  color: #fff;
-  border: none;
-  border-radius: 10px;
-  padding: 10px 14px;
-  cursor: pointer;
-  font-weight: 600;
-}
-.income-page .income-form #saveBtn:hover{ filter: brightness(.95); }
-
-.income-page .income-form #resetBtn{
-  grid-column: span 2;
-  background: #fff;
-  color: #0a7254;
-  border: 1px solid #e7ecf6;
-  border-radius: 10px;
-  padding: 10px 14px;
-  cursor: pointer;
-  font-weight: 600;
-}
-.income-page .income-form #resetBtn:hover{ background: #f8fafc; }
-
-/* Table */
-.income-page .table-wrap{ overflow:auto; border-radius: 12px; }
-.income-page .data-table{
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  background: #fff;
-  border: 1px solid #e7ecf6;
-  border-radius: 12px;
-}
-.income-page .data-table thead th{
-  position: sticky; top: 0;
-  background: #f8fafc;
-  text-align: left;
-  font-weight: 700;
-  color: #0f172a;
-  padding: 12px 14px;
-  border-bottom: 1px solid #e7ecf6;
-}
-.income-page .data-table tbody td{
-  padding: 12px 14px;
-  border-bottom: 1px solid #e7ecf6;
-  color: #111827;
-}
-.income-page .data-table tbody tr:nth-child(even){ background:#fcfdff; }
-.income-page .data-table tbody tr:hover{ background:#f6fbf9; }
-
-/* Table action buttons */
-.income-page .data-table button{
-  padding: 6px 10px;
-  border-radius: 8px;
   border: 1px solid #e7ecf6;
   background: #fff;
-  color: #0f172a;
-  cursor: pointer;
-  margin-right: 6px;
-  transition: background .15s ease;
 }
-.income-page .data-table button:hover{ background:#f8fafc; }
-.income-page .data-table .delBtn{ color:#ff4c60; }
-
-/* Chart box title spacing (keep dashboard style) */
-.income-page .chart-title{
-  font-weight: 600;
-  color: #0f172a;
-  margin-bottom: 10px;
-}
-
-/* Responsive tweaks just for the form */
-@media (max-width: 960px){
-  .income-page .income-form input,
-  .income-page .income-form select{ grid-column: span 6; }
-  .income-page .income-form #saveBtn,
-  .income-page .income-form #resetBtn{ grid-column: span 6; }
-}
-@media (max-width: 640px){
-  .income-page .income-form input,
-  .income-page .income-form select{ grid-column: span 12; }
-}
-/* ================= Income page only ================= */
-.income-page .kpi-cards{
-  display:flex;
-  justify-content:center;   /* centers the card */
-}
-.income-page .kpi-cards .card{
-  max-width: 860px;
+.income-page .data-table,
+.expense-page .data-table{
   width: 100%;
 }
+/* ==== Range chips & scrollable charts ==== */
+.range-row{
+  display:flex; align-items:center; gap:12px; justify-content:space-between; margin-bottom:10px;
+}
+.range-chips{ display:flex; gap:8px; align-items:center; }
+.range-chips .chip{
+  border:1px solid #e7ecf6; background:#fff; padding:6px 10px; border-radius:999px;
+  font-weight:600; cursor:pointer;
+}
+.range-chips .chip.active{ border-color:#009e73; box-shadow:0 0 0 2px rgba(0,158,115,.12); }
 
-/* Make inputs invisible until focused */
-.income-page .income-form input[type="date"],
-.income-page .income-form input[type="number"],
-.income-page .income-form select{
-  border: 1px solid transparent;
-  background: transparent;
-  border-radius: 10px;
-  padding: 10px 12px;
-  transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
-}
-.income-page .income-form input:focus,
-.income-page .income-form select:focus{
-  border-color: #e7ecf6;
-  background: #fff;
-  box-shadow: 0 0 0 3px rgba(0,158,115,.15); /* brand green glow */
-}
-
-/* Source radio group */
-.income-page .source-group{
-  display:flex; gap:16px; align-items:center;
-}
-.income-page .source-group input[type="radio"]{
-  accent-color: #009e73;  /* brand */
-}
-
-/* Title + Clear button row in response areas */
-.income-page .chart-title-row{
+.chart-scroll{ overflow-x:auto; }
+.chart-scroll canvas{ display:block; }            /* width set in JS */
+/* ===== Chart range chips (Income & Expense) ===== */
+.range-row{
   display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;
 }
-.income-page .ghost-btn{
-  background: transparent;
-  color: #0a7254;
-  border: 1px solid #e7ecf6;
-  border-radius: 10px;
-  padding: 6px 10px;
-  font-weight: 600;
-  cursor: pointer;
-}
-.income-page .ghost-btn:hover{ background:#f8fafc; }
 
-/* Table visuals (keep dashboard feel) */
-.income-page .table-wrap{ overflow:auto; border-radius: 12px; }
-.income-page .data-table{
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  background: #fff;
-  border: 1px solid #e7ecf6;
-  border-radius: 12px;
-}
-.income-page .data-table thead th{
-  background:#f8fafc;
-  text-align:left; font-weight:700; color:#0f172a;
-  padding:12px 14px; border-bottom:1px solid #e7ecf6;
-}
-.income-page .data-table tbody td{
-  padding:12px 14px; border-bottom:1px solid #e7ecf6; color:#111827;
-}
-.income-page .data-table tbody tr:nth-child(even){ background:#fcfdff; }
-.income-page .data-table tbody tr:hover{ background:#f6fbf9; }
-.income-page .data-table button{
-  padding:6px 10px; border-radius:8px; border:1px solid #e7ecf6; background:#fff; cursor:pointer; margin-right:6px;
-}
-.income-page .data-table button:hover{ background:#f8fafc; }
-.income-page .data-table .delBtn{ color:#ff4c60; }
-
-/* === Income page refinements === */
-.income-page .kpi-cards { display:flex; justify-content:center; }
-.income-page .kpi-cards .card{
-  max-width: 980px;        /* bigger add/edit card */
-  width: 100%;
-  padding: 36px 40px;      /* more breathing room */
+.range-chips{
+  display:flex; align-items:center; gap:10px;
 }
 
-/* Title hierarchy */
-.income-page .kpi-cards .card h2{
-  font-size: 24px;         /* bigger than section labels */
-  font-weight: 700;
-  letter-spacing:.3px;
-  margin-bottom: 18px;
-}
-
-/* Section labels (Date, Source, Amount, Cadence) */
-.income-page .income-form .form-row label{
-  font-size: 16px;         /* smaller than title but larger than before */
-  font-weight: 700;
-  color:#4b5563;
-  margin-bottom: 8px;
-}
-
-/* Always-visible, darker green outline for inputs */
-.income-page .outline-green{
-  width:100%;
-  padding:12px 14px;
-  border: 2px solid #0a7254;                     /* darker green */
-  border-radius:12px;
+/* default chip */
+.chip{
+  appearance:none;
+  border:1.5px solid #dbe3f3;
   background:#fff;
-  box-shadow: 0 0 0 3px rgba(10,114,84,.12);     /* subtle green glow, always on */
-  outline:none;
-  transition: border-color .15s ease, box-shadow .15s ease;
+  color:#0f172a;              /* dark text so it's readable */
+  padding:6px 12px;
+  border-radius:999px;
+  font-weight:600;
+  font-size:13px;
+  line-height:1;
+  cursor:pointer;
+  transition:background .15s ease, border-color .15s ease, color .15s ease;
 }
-.income-page .outline-green:focus{
-  border-color:#086146;                          /* slightly darker on focus */
-  box-shadow: 0 0 0 4px rgba(10,114,84,.18);
-}
+.chip:hover{ background:#f8fafc; }
 
-/* Radio group + color */
-.income-page .source-group{ display:flex; justify-content:center; gap:18px; align-items:center; }
-.income-page .source-group input[type="radio"]{ accent-color:#0a7254; }
-
-/* Keep Save/Clear centered on their own row */
-.income-page .form-actions{
-  display:flex; justify-content:center; gap:12px; margin-top:10px;
-}
-.income-page #saveBtn{
-  background:#009e73; color:#fff; border:2px solid #007e5d; border-radius:12px;
-  padding:10px 18px; font-weight:700; cursor:pointer;
-}
-.income-page #saveBtn:hover{ filter:brightness(.95); }
-.income-page #resetBtn{
-  background:#fff; color:#0a7254; border:2px solid #0a7254; border-radius:12px;
-  padding:10px 18px; font-weight:700; cursor:pointer;
-}
-.income-page #resetBtn:hover{ background:#f8fafc; }
-
-/* Cap chart height (keeps panel compact) */
-.income-page #incomeTrend{ height:220px !important; }
-/* ===== Income page: make the Add/Edit card smaller ===== */
-.income-page .kpi-cards { display:flex; justify-content:center; margin-bottom:18px; }
-
-.income-page .kpi-cards .card{
-  max-width: 780px;      /* was ~980 — narrower */
-  width: 100%;
-  padding: 18px 22px;    /* less padding so it’s shorter */
+/* selected chip */
+.chip.active{
+  background:#009e73;         /* brand green */
+  border-color:#007e5d;
+  color:#fff;                 /* white text on green */
 }
 
-/* Title a touch smaller to save height */
-.income-page .kpi-cards .card h2{
-  font-size: 22px;       /* was 24 */
-  margin-bottom: 12px;
+/* keep the Clear button visually consistent next to chips */
+.range-chips .ghost-btn{
+  margin-left:6px;
+  padding:6px 10px;
+  border-radius:999px;
+}
+/* More space between any card title and its content */
+.card > h1,
+.card > h2,
+.card > h3,
+.card > .chart-title {
+  margin-bottom: 100;   /* tweak 12–24px to taste */
 }
 
-/* Form compaction */
-.income-page .income-form{ gap: 14px; }
-.income-page .form-row{ max-width: 420px; }   /* shrink input width a bit */
-.income-page .income-form .form-row label{
-  font-size: 15px;       /* slightly smaller labels */
-  margin-bottom: 6px;
-}
-
-/* Inputs keep the green outline but are a bit slimmer */
-.income-page .outline-green{
-  padding: 10px 12px;
-  border: 2px solid #0a7254;
-  border-radius: 10px;
-  box-shadow: 0 0 0 2px rgba(10,114,84,.10);
-}
-.income-page .outline-green:focus{
-  border-color:#086146;
-  box-shadow: 0 0 0 3px rgba(10,114,84,.16);
-}
-
-/* Radios closer together but still readable */
-.income-page .source-group{ gap: 14px; }
-
-/* Actions a little tighter */
-.income-page .form-actions{ gap:10px; margin-top:6px; }
-.income-page #saveBtn, .income-page #resetBtn{ padding:9px 16px; }
-
-/* Keep the chart compact */
-.income-page #incomeTrend{ height: 220px !important; }
-
-/* Income-only: make radio option labels normal weight */
-
-.income-page .income-form .form-row .source-group label{
-  font-weight: 400 !important;
-  letter-spacing: 0;
-  text-transform: none;
+/* (Optional) nudge just the income chart down a touch more */
+#incomeChart {
+  margin-top: 6px;
 }

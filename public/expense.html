@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expense · Walletly</title>
+
+  <!-- Styles (uses your existing dashboard.css) -->
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link
+    href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+    rel="stylesheet"
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- <style>
+    /* ------- Expense page form layout ------- */
+    .expense-page .expense-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+    .expense-page .form-row {
+      width: 100%;
+      max-width: 480px;
+      text-align: center;
+    }
+    .expense-page .form-row label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #4b5563;
+    }
+    /* Green outlined inputs (same as income design) */
+    .expense-page .outline-green {
+      width: 100%;
+      padding: 10px 12px;
+      border: 2px solid #009e73;
+      border-radius: 10px;
+      background: #fff;
+      outline: none;
+      transition: box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+    .expense-page .outline-green:focus {
+      box-shadow: 0 0 0 3px rgba(0, 158, 115, 0.18);
+      border-color: #0a7254;
+    }
+    /* Radio group centered */
+    .expense-page .category-group {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      align-items: center;
+    }
+    .expense-page .category-group input[type="radio"] {
+      accent-color: #009e73;
+    }
+    /* Actions centered under the fields */
+    .expense-page .form-actions {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 6px;
+    }
+    .expense-page #saveBtn {
+      background: #009e73;
+      color: #fff;
+      border: 2px solid #007e5d;
+      border-radius: 12px;
+      padding: 10px 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .expense-page #saveBtn:hover {
+      filter: brightness(0.95);
+    }
+    .expense-page #resetBtn {
+      background: #fff;
+      color: #0a7254;
+      border: 2px solid #009e73;
+      border-radius: 12px;
+      padding: 10px 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .expense-page #resetBtn:hover {
+      background: #f8fafc;
+    }
+  </style> -->
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Page script -->
+  <script defer src="js/expense.js"></script>
+</head>
+
+<body class="expense-page">
+  <!-- Sidebar -->
+  <!-- <aside class="sidebar" id="sidebar">
+    <div class="logo">
+      <i class="bx bx-cube-alt"></i>
+    </div>
+
+    <nav class="menu">
+      <h1 class="menu-header">Menu</h1>
+
+      <div class="menu-item" data-tooltip="Dashboard">
+        <i class="bx bx-home-smile"></i>
+        <a href="/dashboard" style="text-decoration: none; color: inherit">
+          <span>Dashboard</span>
+        </a>
+      </div>
+
+      <div class="menu-item" data-tooltip="Income">
+        <i class="bx bx-bar-chart-alt-2"></i>
+        <a href="/income" style="text-decoration: none; color: inherit">
+          <span>Income</span>
+        </a>
+      </div>
+
+      <div class="menu-item nav-active" data-tooltip="Expenses">
+        <i class="bx bx-cart"></i>
+        <span>Expenses</span>
+      </div>
+
+      <div class="menu-item" data-tooltip="Report">
+        <i class="bx bx-line-chart"></i>
+        <span>Report</span>
+      </div>
+
+      <div class="menu-item" data-tooltip="Settings">
+        <i class="bx bx-cog"></i>
+        <span>Settings</span>
+      </div>
+
+      <h1 class="menu-header">Shortcuts</h1>
+      <div class="menu-item" data-tooltip="Add">
+        <i class="bx bx-add-to-queue"></i>
+        <span>Add</span>
+      </div>
+      <div class="menu-item" data-tooltip="Remove">
+        <i class="bx bx-message-square-minus"></i>
+        <span>Remove</span>
+      </div>
+    </nav>
+
+    <div class="logout" data-tooltip="Logout" id="logoutLink">
+      <i class="bx bx-log-out"></i>
+      <span>Logout</span>
+    </div>
+  </aside> -->
+
+      <aside class="sidebar" id="sidebar">
+      <div class="logo"><i class="bx bx-cube-alt"></i></div>
+      
+      <nav class="menu">
+        <h1 class="menu-header">Menu</h1>
+        
+        <div class="menu-item" data-link="dashboard" data-tooltip="Dashboard">
+          <i class="bx bx-home-smile"></i>
+          <a href="/dashboard" style="text-decoration:none;color:inherit">
+            <span>Dashboard</span>
+          </a>
+        </div>
+        
+        <div class="menu-item" data-link="income" data-tooltip="Income">
+          <i class="bx bx-bar-chart-alt-2"></i>
+          <a href="/income" style="text-decoration:none;color:inherit">
+            <span>Income</span>
+          </a>
+        </div>
+        
+        <div class="menu-item" data-link="expense" data-tooltip="Expense">
+          <i class="bx bx-cart"></i>
+          <a href="/expense" style="text-decoration:none;color:inherit">
+            <span>Expense</span>
+          </a>
+        </div>
+        
+        <div class="menu-item" data-link="report" data-tooltip="Budget Report">
+          <i class="bx bx-line-chart"></i>
+          <a href="/report" style="text-decoration:none;color:inherit">
+            <span>Budget Report</span>
+          </a>
+        </div>
+      </nav>
+      
+      <div class="logout" data-tooltip="Logout" id="logoutLink">
+        <i class="bx bx-log-out"></i><span>Logout</span>
+      </div>
+    </aside>
+
+  <!-- Main -->
+  <main class="dashboard-content">
+    <div class="header">
+      <h1>Expenses</h1>
+      <div>
+        <button id="refreshButton">Refresh</button>
+        <button id="logoutButton">Log Out</button>
+      </div>
+    </div>
+
+    <!-- Add / Edit (centered card) -->
+    <div class="kpi-cards">
+      <div class="card" style="max-width: 860px; width: 100%;">
+        <h2>Add / Edit Expense</h2>
+
+        <form id="expenseForm" class="expense-form" autocomplete="off">
+          <input type="hidden" id="expenseId" />
+
+          <div class="form-row">
+            <label for="expenseDate">Date</label>
+            <input
+              type="date"
+              id="expenseDate"
+              class="outline-green"
+              required
+            />
+          </div>
+
+          <div class="form-row">
+            <label>Category</label>
+            <div class="category-group">
+              <label>
+                <input type="radio" name="category" value="Food/Groceries" checked />
+                Food/Groceries
+              </label>
+              <label>
+                <input type="radio" name="category" value="Rent" />
+                Rent
+              </label>
+              <label>
+                <input type="radio" name="category" value="Utilities" />
+                Utilities
+              </label>
+              <label>
+                <input type="radio" name="category" value="Entertainment" />
+                Entertainment
+              </label>
+              <label>
+                <input type="radio" name="category" value="Other" />
+                Other
+              </label>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <label for="expenseAmount">Amount</label>
+            <input
+              type="text"
+              id="expenseAmount"
+              class="outline-green"
+              inputmode="decimal"
+              placeholder="$0.00"
+              autocomplete="off"
+              required
+            />
+          </div>
+
+          <div class="form-row">
+            <label for="expenseCadence">Cadence</label>
+            <select id="expenseCadence" class="outline-green">
+              <option value="monthly">Monthly</option>
+              <option value="weekly">Weekly</option>
+              <option value="one-time">One-time</option>
+            </select>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" id="saveBtn">Save</button>
+            <button type="button" id="resetBtn">Clear</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Panels (two-column grid like dashboard), chart height capped -->
+    <div class="charts-grid">
+      <!-- <div class="chart-box">
+        <div
+          class="chart-title-row"
+          style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;"
+        >
+          <div class="chart-title">Expenses by Month</div>
+          <button class="ghost-btn" id="clearTrendBtn">Clear</button>
+        </div>
+        <canvas id="expenseTrend" height="220"></canvas>
+      </div>
+
+      <div class="chart-box">
+        <div
+          class="chart-title-row"
+          style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;"
+        >
+          <div class="chart-title">All Expenses</div>
+          <button class="ghost-btn" id="clearTableBtn">Clear</button>
+        </div>
+        <div id="expenseTableWrap" class="table-wrap">
+          <p>No expenses yet.</p>
+        </div>
+      </div>
+    </div> -->
+    <!-- <div class="chart-box">
+  <div class="range-row">
+    <div class="chart-title">Expenses by Month</div>
+    <div class="range-chips">
+      <button class="chip" data-range-expense="3">3M</button>
+      <button class="chip" data-range-expense="6">6M</button>
+      <button class="chip" data-range-expense="12">12M</button>
+      <button class="chip" data-range-expense="ALL">All</button>
+      <button class="ghost-btn" id="clearTrendBtn">Clear</button>
+    </div>
+  </div>
+
+  scroll wrapper
+  <div id="expenseTrendWrap" class="chart-scroll">
+    <canvas id="expenseTrend" height="220"></canvas>
+  </div>
+</div> -->
+<!-- Panels (two-column grid like dashboard) -->
+<div class="charts-grid">
+  <!-- Chart card -->
+  <div class="chart-box">
+    <div class="range-row">
+      <div class="chart-title">Expenses by Month</div>
+      <div class="range-chips">
+        <button class="chip" data-range-expense="3">3M</button>
+        <button class="chip" data-range-expense="6">6M</button>
+        <button class="chip" data-range-expense="12">12M</button>
+        <button class="chip" data-range-expense="ALL">All</button>
+        <button class="ghost-btn" id="clearTrendBtn">Clear</button>
+      </div>
+    </div>
+
+    <!-- scroll wrapper to avoid squished labels -->
+    <div id="expenseTrendWrap" class="chart-scroll">
+      <canvas id="expenseTrend" height="220"></canvas>
+    </div>
+  </div>
+
+  <!-- Table card -->
+  <div class="chart-box">
+    <div class="chart-title-row" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <div class="chart-title">All Expenses</div>
+      <button class="ghost-btn" id="clearTableBtn">Clear</button>
+    </div>
+
+    <!-- IMPORTANT: expense.js renders into this -->
+    <div id="expenseTableWrap" class="table-wrap">
+      <p>No expenses yet.</p>
+    </div>
+  </div>
+</div>
+
+  </main>
+      <script>
+    (function () {
+      const path = location.pathname;
+      const map = {
+        '/dashboard': 'dashboard',
+        '/income': 'income',
+        '/expense': 'expense',
+        '/report': 'report',
+      };
+      const key = map[path];
+      if (key) {
+        document
+        .querySelector(`.menu .menu-item[data-link="${key}"]`)
+        ?.classList.add('nav-active');
+      }
+
+    // Consistent logout
+    document.getElementById('logoutLink')?.addEventListener('click', () => {
+      localStorage.removeItem('token');
+      localStorage.removeItem('jwtToken');
+      location.href = '/';
+    });
+    })();
+    </script>
+</body>
+</html>

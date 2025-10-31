@@ -16,7 +16,7 @@
 
   <body class="dashboard-page">
     <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
+    <!-- <aside class="sidebar" id="sidebar">
       <div class="logo"><i class="bx bx-cube-alt"></i></div>
 
       <nav class="menu">
@@ -47,7 +47,47 @@
       <div class="logout" data-tooltip="Logout">
         <i class="bx bx-log-out"></i><span>Logout</span>
       </div>
+    </aside> -->
+    <aside class="sidebar" id="sidebar">
+      <div class="logo"><i class="bx bx-cube-alt"></i></div>
+      
+      <nav class="menu">
+        <h1 class="menu-header">Menu</h1>
+        
+        <div class="menu-item" data-link="dashboard" data-tooltip="Dashboard">
+          <i class="bx bx-home-smile"></i>
+          <a href="/dashboard" style="text-decoration:none;color:inherit">
+            <span>Dashboard</span>
+          </a>
+        </div>
+        
+        <div class="menu-item" data-link="income" data-tooltip="Income">
+          <i class="bx bx-bar-chart-alt-2"></i>
+          <a href="/income" style="text-decoration:none;color:inherit">
+            <span>Income</span>
+          </a>
+        </div>
+        
+        <div class="menu-item" data-link="expense" data-tooltip="Expense">
+          <i class="bx bx-cart"></i>
+          <a href="/expense" style="text-decoration:none;color:inherit">
+            <span>Expense</span>
+          </a>
+        </div>
+        
+        <div class="menu-item" data-link="report" data-tooltip="Budget Report">
+          <i class="bx bx-line-chart"></i>
+          <a href="/report" style="text-decoration:none;color:inherit">
+            <span>Budget Report</span>
+          </a>
+        </div>
+      </nav>
+      
+      <div class="logout" data-tooltip="Logout" id="logoutLink">
+        <i class="bx bx-log-out"></i><span>Logout</span>
+      </div>
     </aside>
+
 
     <!-- Main Content -->
     <main class="dashboard-content">
@@ -82,10 +122,19 @@
           <canvas id="incomeChart"></canvas>
         </div>
 
-        <div class="chart-box">
+        <!-- <div class="chart-box">
           <div class="chart-title">Expense Breakdown by Category</div>
           <div class="chart-placeholder"></div>
+        </div> -->
+        <!-- Expense Breakdown by Category -->
+         <div class="chart-box">
+          <div class="chart-title">Expense Breakdown by Category</div>
+          <div class="chart-body">
+            <canvas id="categoryChart" height="220"></canvas>
+            <p id="categoryChartEmpty" class="empty-msg">No expense data yet.</p>
+          </div>
         </div>
+
 
         <div class="chart-box">
           <div class="chart-title">Budget vs Actual</div>
@@ -97,5 +146,29 @@
     <!-- Scripts -->
     <script src="/js/datamodel.js"></script>
     <script src="/js/dashboard.js"></script>
+        <script>
+    (function () {
+      const path = location.pathname;
+      const map = {
+        '/dashboard': 'dashboard',
+        '/income': 'income',
+        '/expense': 'expense',
+        '/report': 'report',
+      };
+      const key = map[path];
+      if (key) {
+        document
+        .querySelector(`.menu .menu-item[data-link="${key}"]`)
+        ?.classList.add('nav-active');
+      }
+
+    // Consistent logout
+    document.getElementById('logoutLink')?.addEventListener('click', () => {
+      localStorage.removeItem('token');
+      localStorage.removeItem('jwtToken');
+      location.href = '/';
+    });
+    })();
+    </script>
   </body>
 </html>
