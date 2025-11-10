@@ -20,3 +20,4 @@ The files listed above are commented fairly extensively and organized with purpo
 -MVC pattern for well-organized code
 -Salted and hashed password management
 -JWT tokens for secure authorization
+# Team-4-APP
